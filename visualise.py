@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import sys
+import math
 
 from datetime import datetime
 import argparse
@@ -55,17 +56,48 @@ def main():
 
   inkyphat.set_colour("red")
 
-  ssh = "ssh> pi@{}".format(sys.argv[1])
+  ssh = "pi@{}".format(sys.argv[1])
   web = "http://{}".format(sys.argv[1])
 
   inkyphat.set_border(inkyphat.RED)
 
-  font = ImageFont.truetype(inkyphat.fonts.FredokaOne, 22)
+  font = ImageFont.truetype(inkyphat.fonts.FredokaOne, 12)
 
-  x, y, w, h = center(ssh, font)
-  center(web, font, y=y+h)
   current_time = datetime.now().strftime('%Y-%m-%d %H:%M')
-  center(current_time, font, y=0)
+  x, y, w, h = center(current_time + " | "  + ssh, font, y=0)
+
+  m = 5 # margin
+  plot = {
+    "top": h,
+    "bottom": inkyphat.HEIGHT - m,
+    "left": m,
+    "right": inkyphat.WIDTH - m,
+  }
+  # axes
+  inkyphat.line((plot['left'], plot['top'], plot['left'], plot['bottom']), inkyphat.RED)
+  inkyphat.line((plot['left'], plot['bottom'], plot['right'], plot['bottom']), inkyphat.RED)
+
+  N = 100
+  x_range = int(plot["right"] - plot["left"])
+  x_step = int(x_range / N)
+  y_range = int(plot["bottom"] - plot["top"])
+  unix_epoch = (datetime.now() - datetime(1970,1,1)).total_seconds()
+  for x in range(N):
+    inkyphat.line((
+      plot['left']+x*x_step,
+      plot['bottom']-y_range*(1+math.sin(x*(N*x_range)+unix_epoch))/2,
+      plot['left']+(x+1)*x_step,
+      plot['bottom']-y_range*(1+math.sin((x+1)*(N*x_range)+unix_epoch))/2
+    )
+    , inkyphat.RED)
+
+    inkyphat.line((
+      plot['left']+x*x_step,
+      plot['bottom']-y_range*(1+math.cos(x*(N*x_range)+unix_epoch))/2,
+      plot['left']+(x+1)*x_step,
+      plot['bottom']-y_range*(1+math.cos((x+1)*(N*x_range)+unix_epoch))/2
+    ), inkyphat.BLACK)
+
 
   inkyphat.show()
 
