@@ -2,7 +2,6 @@
 
 import sys
 import math
-
 from datetime import datetime
 import argparse
 
@@ -15,6 +14,7 @@ print("""Visualise:
 Display information about MQTT feeds
 
 """)
+
 
 def center(message, font, x=None, y=None):
   """Center text on Inky pHat eInk display
