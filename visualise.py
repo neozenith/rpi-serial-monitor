@@ -93,9 +93,9 @@ def main():
 
     inkyphat.line((
       plot['left']+x*x_step,
-      plot['bottom']-y_range*(1+math.cos(x*(N*x_range)+unix_epoch))/2,
+      plot['bottom']-y_range*0.5*(1+math.cos(x*(x_range)+unix_epoch))/2,
       plot['left']+(x+1)*x_step,
-      plot['bottom']-y_range*(1+math.cos((x+1)*(N*x_range)+unix_epoch))/2
+      plot['bottom']-y_range*0.5*(1+math.cos((x+1)*(x_range)+unix_epoch))/2
     ), inkyphat.BLACK)
 
 
