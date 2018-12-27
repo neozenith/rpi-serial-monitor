@@ -55,8 +55,7 @@ def main():
       sys.exit(1)
 
   inkyphat.set_colour("red")
-
-  ssh = "pi@{}".format(sys.argv[1])
+  ips = sys.argv[1].split("\n")
   web = "http://{}".format(sys.argv[1])
 
   inkyphat.set_border(inkyphat.RED)
@@ -64,7 +63,10 @@ def main():
   font = ImageFont.truetype(inkyphat.fonts.FredokaOne, 12)
 
   current_time = datetime.now().strftime('%Y-%m-%d %H:%M')
-  x, y, w, h = center(current_time + " | "  + ssh, font, y=0)
+  x, y, w, h = center(current_time, font, y=0)
+  for ip in ips:
+    x, y, w, h = center("pi@{}".format(ip), font, y=y+h)
+
 
   m = 5 # margin
   plot = {
